@@ -9,3 +9,6 @@
 ```npm
 npm run docs:dev
 ```
+
+**注意**
+上传中包含依赖不需要使用[npm intall]命令进行安装
