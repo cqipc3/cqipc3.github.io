@@ -31,9 +31,14 @@ export default {
         items: [
           {
             items: [
-              { text: "介绍", link: "articles/开始/介绍" },
-              { text: "使用指南", link: "articles/开始/使用指南"}
+              { text: "介绍", link: "articles/就开始吧/介绍" },
               // { text: "通用", link: "/item-A2" },
+            ],
+          },
+          {
+            items: [
+             // { text: "B1", link: "/item-B1" },
+              //{ text: "B2", link: "/item-B2" },
             ],
           },
         ],
@@ -44,13 +49,13 @@ export default {
         {
           text: "CQIPC-IS-WIKI",
           collapsible: true,
+          
           items: [
-            { text: "介绍", link: "/articles/开始/介绍.md" },
-            { text: "使用指南",link: "/articles/开始/使用指南.md",},
-             { text: "更新日志", link: "/articles/开始/更新日志.md" },
+            { text: "介绍", link: "/articles/就开始吧/介绍.md" },
+            { text: "使用指南",link: "/articles/就开始吧/使用指南.md",},
+             { text: "更新日志", link: "/articles/就开始吧/更新日志.md" },
           ],
         },
-
         {
           text: "杂谈或者通用",
           collapsible: true,
@@ -74,7 +79,6 @@ export default {
             },
           ],
         },
-
         {
           text: "Web - 未知领域 ",
           collapsible: true,
@@ -86,7 +90,6 @@ export default {
             },
           ],
         },
-
         {
           text: "Network - 网络管理",
           collapsible: true,
@@ -98,7 +101,6 @@ export default {
             },
           ],
         },
-
         {
           text: "Reverse - 逆向工程",
           collapsible: true,

@@ -11,7 +11,7 @@ hero:
   actions:
     - theme: brand
       text: 开始吧
-      link: /articles/开始/介绍.md
+      link: /articles/就开始吧/介绍.md
     - theme: alt
       text: GitHub
       link: https://github.com/CQIPC3
