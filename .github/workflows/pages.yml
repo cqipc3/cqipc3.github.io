@@ -18,8 +18,10 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # 需要完整历史,才能用提交日期作为文章默认日期
       - name: Install pandoc
-        run: sudo apt-get update && sudo apt-get install -y pandoc
+        run: sudo apt-get update && sudo apt-get install -y pandoc perl
       - name: Build
         run: ./build.sh
       - uses: actions/upload-pages-artifact@v3
