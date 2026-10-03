@@ -15,6 +15,7 @@ if(t==="dark"||t==="light")document.documentElement.dataset.theme=t})();
 <header class="site">
   <a class="name" href="$root$./">$site-title$</a>
   <nav>
+    <a href="$root$thoughts/">心轨</a>
     <a href="$root$about/">关于</a>
     <button class="theme" type="button" role="switch" aria-checked="false" aria-label="深色模式" hidden>
       <span class="knob"></span>
@@ -29,6 +30,7 @@ $else$
 <article>
   <h1>$title$</h1>
 $if(post)$  <p class="meta"><time datetime="$date$">$date$</time></p>
+$endif$$if(timeline)$  <p class="meta">想到什么,随手记下。时间即标题。</p>
 $endif$$body$
 </article>
 $endif$

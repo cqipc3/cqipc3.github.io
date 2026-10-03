@@ -74,6 +74,27 @@ index=$(mktemp)
   done < <(printf '%s' "$rows" | sort -r)
   [ -n "$year" ] && echo "</ul></section>"
 } > "$index"
+
+# 心轨:thoughts/ 里一条一个文件,时间取该文件第一次提交的时刻
+thoughts_rows=""
+for f in thoughts/*.md; do
+  [ -e "$f" ] || continue
+  ts=$(git log --diff-filter=A --format=%aI -- "$f" 2>/dev/null | tail -n1)
+  [ -n "$ts" ] || ts=$(date -r "$f" +%Y-%m-%dT%H:%M:%S)
+  thoughts_rows+="$ts|$f"$'\n'
+done
+if [ -n "$thoughts_rows" ]; then
+  {
+    echo '<section class="thoughts"><h2>心轨</h2><ul>'
+    printf '%s' "$thoughts_rows" | sort -r | head -n 3 | while IFS='|' read -r ts f; do
+      line=$(awk 'NR==1&&/^---[[:space:]]*$/{infm=1;next} infm&&/^---[[:space:]]*$/{infm=0;next} !infm' "$f" | grep -m1 -v '^[[:space:]]*$')
+      esc=$(printf '%s' "$line" | sed 's/&/\&amp;/g;s/</\&lt;/g;s/>/\&gt;/g')
+      echo "<li><time datetime=\"$ts\">${ts:0:10} ${ts:11:5}</time><p>$esc</p></li>"
+    done
+    echo '</ul><p class="more"><a href="thoughts/">更多 →</a></p></section>'
+  } >> "$index"
+fi
+
 render "$index" "$OUT" "" -V index=1 --metadata title="$SITE_TITLE"
 rm -f "$index"
 
@@ -83,6 +104,25 @@ for f in pages/*.md; do
   title=$(meta "$f" title); [ -n "$title" ] || title=$(basename "$f" .md)
   render "$f" "$OUT/$(slug_of "$f")" "../" --metadata title="$title"
 done
+
+# 心轨时间线页:所有想法按时间倒序拼成一篇渲染
+if [ -n "$thoughts_rows" ]; then
+  tl=$(mktemp)
+  {
+    echo '::: {.timeline}'
+    while IFS='|' read -r ts f; do
+      [ -n "$ts" ] || continue
+      echo
+      echo "## ${ts:0:10} · ${ts:11:5}"
+      echo
+      awk 'NR==1&&/^---[[:space:]]*$/{infm=1;next} infm&&/^---[[:space:]]*$/{infm=0;next} !infm{print}' "$f"
+    done < <(printf '%s' "$thoughts_rows" | sort -r)
+    echo
+    echo ':::'
+  } > "$tl"
+  render "$tl" "$OUT/thoughts" "../" -V timeline=1 --metadata title="心轨"
+  rm -f "$tl"
+fi
 
 cp style.css "$OUT/"
 [ -d static ] && cp -r static/. "$OUT/" && rm -f "$OUT/.gitkeep"
