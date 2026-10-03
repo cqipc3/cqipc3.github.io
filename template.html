@@ -9,7 +9,9 @@
 (function(){var t;try{t=localStorage.getItem("theme")}catch(e){}
 if(t==="dark"||t==="light")document.documentElement.dataset.theme=t})();
 </script>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%231f3a5f'/%3E%3Cpath d='M9 11l7 5-7 5M18 22h6' fill='none' stroke='%23fff' stroke-width='2.5'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="$root$style.css">
+<script src="$root$site.js" defer></script>
 </head>
 <body class="$if(index)$home$else$inner$endif$">
 <header class="site">
@@ -33,23 +35,21 @@ $if(post)$  <p class="meta"><time datetime="$date$">$date$</time></p>
 $endif$$if(timeline)$  <p class="meta">想到什么,随手记下。时间即标题。</p>
 $endif$$body$
 </article>
+$if(source)$
+<p class="source"><a class="source-link" href="$source$">源文件</a> · <a href="$history$">修改历史</a></p>
+$endif$
+$if(post)$
+<nav class="pager" aria-label="文章导航">
+  <span>$if(older-url)$<a rel="prev" href="$older-url$"><small>更早</small>$older-title$</a>$endif$</span>
+  <span>$if(newer-url)$<a rel="next" href="$newer-url$"><small>更新</small>$newer-title$</a>$endif$</span>
+</nav>
+$endif$
 $endif$
 </main>
-<script>
-(function(){
-  var root=document.documentElement,btn=document.querySelector(".theme");
-  if(!btn)return;
-  var mq=matchMedia("(prefers-color-scheme: dark)");
-  function dark(){return root.dataset.theme?root.dataset.theme==="dark":mq.matches}
-  function sync(){btn.setAttribute("aria-checked",dark())}
-  btn.hidden=false;sync();
-  btn.addEventListener("click",function(){
-    var next=dark()?"light":"dark";root.dataset.theme=next;
-    try{localStorage.setItem("theme",next)}catch(e){}
-    sync();
-  });
-  mq.addEventListener&&mq.addEventListener("change",sync);
-})();
-</script>
+<footer class="site">
+  <span>build <a href="$repo$/commit/$commit$">$commit$</a>$if(dirty)$*$endif$ · $builddate$ · pandoc $pandoc$</span>
+  <span>@@WEIGHT@@ KB 未压缩 · @@REQS@@ 个请求 · @@EXT@@</span>
+  <span><a href="$root$colophon/">colophon</a></span>
+</footer>
 </body>
 </html>
