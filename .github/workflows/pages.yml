@@ -21,7 +21,11 @@ jobs:
         with:
           fetch-depth: 0   # 需要完整历史,才能用提交日期作为文章默认日期
       - name: Install pandoc
-        run: sudo apt-get update && sudo apt-get install -y pandoc perl
+        run: |
+          curl -sL -o pandoc.deb https://github.com/jgm/pandoc/releases/download/3.1.3/pandoc-3.1.3-1-amd64.deb
+          sudo dpkg -i pandoc.deb
+      - name: Install perl
+        run: sudo apt-get update && sudo apt-get install -y perl
       - name: Build
         run: ./build.sh
       - uses: actions/upload-pages-artifact@v3
