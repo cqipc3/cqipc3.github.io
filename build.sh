@@ -27,23 +27,23 @@ for f in posts/*.md; do
   [ -e "$f" ] || continue
   [ "$(meta "$f" draft)" = "true" ] && continue
   slug=$(basename "$f" .md)
-  title=$(meta "$f" title); date=$(meta "$f" date)
+  title=$(meta "$f" title); date=$(meta "$f" date); summary=$(meta "$f" summary)
   render "$f" "$OUT/$slug" "../" -V post=1
-  rows+="$date|$slug|$title"$'\n'
+  rows+="$date|$slug|$title|$summary"$'\n'
 done
 
 # 首页:按日期倒序,按年份分组
 index=$(mktemp)
 {
   year=""
-  while IFS='|' read -r date slug title; do
+  while IFS='|' read -r date slug title summary; do
     [ -n "$date" ] || continue
     if [ "${date:0:4}" != "$year" ]; then
       [ -n "$year" ] && echo "</ul></section>"
       year=${date:0:4}
       echo "<section class=\"year\"><h2>$year</h2><ul>"
     fi
-    echo "<li><time datetime=\"$date\">${date:5}</time><a href=\"$slug/\">$title</a></li>"
+    echo "<li><time datetime=\"$date\">${date:5}</time><div><a href=\"$slug/\">$title</a><p class=\"summary\">$summary</p></div></li>"
   done < <(printf '%s' "$rows" | sort -r)
   [ -n "$year" ] && echo "</ul></section>"
 } > "$index"
