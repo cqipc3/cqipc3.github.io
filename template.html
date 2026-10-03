@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="$lang$" data-root="$root$">
+<html lang="$lang$">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -38,8 +38,8 @@ $if(source)$
 $endif$
 $if(post)$
 <nav class="pager" aria-label="文章导航">
-  <span>$if(older-url)$<a rel="prev" href="$older-url$"><small>[ 更早</small>$older-title$</a>$endif$</span>
-  <span>$if(newer-url)$<a rel="next" href="$newer-url$"><small>更新 ]</small>$newer-title$</a>$endif$</span>
+  <span>$if(older-url)$<a rel="prev" href="$older-url$"><small>更早</small>$older-title$</a>$endif$</span>
+  <span>$if(newer-url)$<a rel="next" href="$newer-url$"><small>更新</small>$newer-title$</a>$endif$</span>
 </nav>
 $endif$
 $endif$
@@ -47,7 +47,7 @@ $endif$
 <footer class="site">
   <span>build <a href="$repo$/commit/$commit$">$commit$</a>$if(dirty)$*$endif$ · $builddate$ · pandoc $pandoc$</span>
   <span>@@WEIGHT@@ KB 未压缩 · @@REQS@@ 个请求 · @@EXT@@</span>
-  <span><a href="$root$colophon/">colophon</a><span class="hint"> · 按 <kbd>?</kbd> 查看快捷键</span></span>
+  <span><a href="$root$colophon/">colophon</a></span>
 </footer>
 </body>
 </html>

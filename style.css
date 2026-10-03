@@ -91,30 +91,3 @@ mark{background:color-mix(in srgb,var(--accent) 18%,transparent);color:inherit;p
 footer.site{margin-top:5rem;padding-top:1rem;border-top:1px solid var(--hair);display:flex;flex-wrap:wrap;gap:.2rem 1.4rem;font-family:var(--mono);font-size:.72rem;color:var(--muted);line-height:1.8}
 footer.site a{color:inherit;text-decoration-color:var(--hair)}
 footer.site a:hover{color:var(--accent)}
-kbd{font-family:var(--mono);font-size:.9em;padding:0 .35em;border:1px solid var(--hair);border-radius:3px;background:var(--code-bg)}
-@media (hover:none){footer.site .hint{display:none}}
-
-/* 首页:j/k 选中的行 */
-section.year li.sel a,section.year li.sel time{color:var(--accent)}
-section.year li{position:relative}
-section.year li.sel::before{content:"";position:absolute;left:-.85rem;top:.7rem;bottom:.7rem;width:2px;background:var(--accent)}
-
-/* 命令行 */
-[hidden]{display:none!important}
-#cmd{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--bg);border-top:1px solid var(--hair);font-family:var(--mono);font-size:.85rem}
-#cmd>*{max-width:37rem;margin:0 auto;padding-left:1.4rem;padding-right:1.4rem}
-#cmd input{display:block;width:100%;box-sizing:border-box;padding:.65rem 0;border:0;outline:0;background:transparent;color:var(--fg);font:inherit;caret-color:var(--accent)}
-.cmd-out{max-height:40vh;overflow:auto;padding-top:.7rem;padding-bottom:.4rem;border-bottom:1px solid var(--hair);color:var(--muted);line-height:1.7;white-space:pre-wrap}
-.cmd-out .kv{display:grid;grid-template-columns:12rem 1fr;gap:0 1rem;white-space:normal}
-.cmd-out .kv span:first-child{color:var(--fg)}
-@media (max-width:36rem){.cmd-out .kv{grid-template-columns:1fr}}
-.cmd-out a{color:var(--fg);text-decoration:none}
-.cmd-out a:hover{color:var(--accent);text-decoration:underline}
-
-/* 快捷键面板 */
-#keys{position:fixed;inset:0;z-index:30;display:flex;align-items:center;justify-content:center;background:color-mix(in srgb,var(--bg) 82%,transparent);font-family:var(--mono);font-size:.85rem}
-#keys .panel{padding:1.4rem 1.6rem;background:var(--bg);border:1px solid var(--hair)}
-#keys h2{margin:0 0 1rem;font-size:.85rem;font-weight:600;font-family:var(--mono)}
-#keys dl{display:grid;grid-template-columns:auto 1fr;gap:.35rem 1.5rem;margin:0}
-#keys dt{color:var(--accent)}
-#keys dd{margin:0;color:var(--muted)}

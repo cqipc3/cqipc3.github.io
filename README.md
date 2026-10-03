@@ -21,11 +21,6 @@ Markdown + pandoc + 一个 shell 脚本,发布到 GitHub Pages。
 - 用 Obsidian Git 插件提交并推送到 `main`;`.obsidian/` 已在 `.gitignore` 中
 - 示例见 `posts/obsidian.md`
 
-## 键盘与命令行
-
-页面支持 vim 式按键,按 `?` 查看全部:`j` `k` 滚动(首页是选择文章,`Enter` 打开)、`gg` `G`、`[` `]` 翻到更早/更新的文章、`t` 切换主题。
-按 `:` 打开命令行(`help` `ls` `open` `random` `theme`…),按 `/` 搜索文章。命令行用的文章清单是构建时生成的 `posts.json`。
-
 ## 构建信息
 
 页脚的提交号、日期、pandoc 版本和页面体积都是构建时算出来的。源文件与修改历史链接指向 `site.conf` 里的 `REPO_URL`(仓库改名后记得同步)。
