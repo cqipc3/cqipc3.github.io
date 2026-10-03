@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="$lang$">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>$if(index)$$site-title$$else$$title$ · $site-title$$endif$</title>
+<meta name="description" content="$site-desc$">
+<link rel="stylesheet" href="$root$style.css">
+</head>
+<body>
+<header class="site">
+  <a class="name" href="$root$./">$site-title$</a>
+  <a href="$root$about/">关于</a>
+</header>
+<main>
+$if(index)$
+<p class="lead">$site-desc$</p>
+$body$
+$else$
+<article>
+  <h1>$title$</h1>
+$if(post)$  <p class="meta"><time datetime="$date$">$date$</time></p>
+$endif$$body$
+</article>
+$endif$
+</main>
+</body>
+</html>
