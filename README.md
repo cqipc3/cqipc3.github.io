@@ -11,13 +11,6 @@ Markdown + pandoc + 一个 shell 脚本,发布到 GitHub Pages。
 
 部署:仓库 Settings → Pages → Source 选 "GitHub Actions",推送到 `main` 即自动发布。
 
-## 心轨(随手想法)
-
-- 放进 `thoughts/`,一条一个 `.md` 文件,正文就是想法,不需要标题
-- 时间自动取该文件第一次提交的时刻,时间线按倒序排,首页也显示最新三条
-- 支持 Obsidian 写法(双链、图片、高亮),图片照旧放 `static/img/`
-- Android 一键捕获:Termux 小部件最省事——脚本在 `scripts/xinji.sh`,复制到 `~/.shortcuts/` 即可;或用 [HTTP Shortcuts](https://httpshortcuts.rmy.ch/) 调 GitHub API
-
 ## 用 Obsidian 写作
 
 把这个仓库作为**独立的 vault** 打开(不要放私人笔记,仓库是公开的)。
