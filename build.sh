@@ -115,19 +115,6 @@ index=$(mktemp)
 render "$index" "$OUT" "" -V index=1 --metadata title="$SITE_TITLE"
 rm -f "$index"
 
-# 供命令行与搜索使用的文章清单
-{
-  printf '['
-  sep=""
-  for e in ${entries[@]+"${entries[@]}"}; do
-    IFS=$US read -r date slug title summary _ <<< "$e"
-    printf '%s{"title":"%s","url":"%s/","date":"%s","summary":"%s"}' "$sep" \
-      "$(json_esc "$title")" "$(json_esc "$slug")" "$date" "$(json_esc "$summary")"
-    sep=","
-  done
-  printf ']\n'
-} > "$OUT/posts.json"
-
 # ---------- 独立页面(如 about) ----------
 for f in pages/*.md; do
   [ -e "$f" ] || continue
