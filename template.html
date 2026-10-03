@@ -5,12 +5,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>$if(index)$$site-title$$else$$title$ · $site-title$$endif$</title>
 <meta name="description" content="$site-desc$">
+<script>
+(function(){var t;try{t=localStorage.getItem("theme")}catch(e){}
+if(t==="dark"||t==="light")document.documentElement.dataset.theme=t})();
+</script>
 <link rel="stylesheet" href="$root$style.css">
 </head>
 <body class="$if(index)$home$else$inner$endif$">
 <header class="site">
   <a class="name" href="$root$./">$site-title$</a>
-  <a href="$root$about/">关于</a>
+  <nav>
+    <a href="$root$about/">关于</a>
+    <button class="theme" type="button" role="switch" aria-checked="false" aria-label="深色模式" hidden>
+      <span class="knob"></span>
+    </button>
+  </nav>
 </header>
 <main>
 $if(index)$
@@ -24,5 +33,21 @@ $endif$$body$
 </article>
 $endif$
 </main>
+<script>
+(function(){
+  var root=document.documentElement,btn=document.querySelector(".theme");
+  if(!btn)return;
+  var mq=matchMedia("(prefers-color-scheme: dark)");
+  function dark(){return root.dataset.theme?root.dataset.theme==="dark":mq.matches}
+  function sync(){btn.setAttribute("aria-checked",dark())}
+  btn.hidden=false;sync();
+  btn.addEventListener("click",function(){
+    var next=dark()?"light":"dark";root.dataset.theme=next;
+    try{localStorage.setItem("theme",next)}catch(e){}
+    sync();
+  });
+  mq.addEventListener&&mq.addEventListener("change",sync);
+})();
+</script>
 </body>
 </html>
