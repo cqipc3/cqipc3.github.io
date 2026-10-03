@@ -61,3 +61,16 @@ pre code{background:none;padding:0}
 table{border-collapse:collapse;width:100%;margin:0 0 1.3rem;font-size:.92rem}
 th,td{text-align:left;padding:.45rem .8rem .45rem 0;border-bottom:1px solid var(--hair)}
 th{font-weight:600}
+
+/* 图片 */
+article img{max-width:100%;height:auto;display:block}
+figure{margin:1.8rem 0}
+figcaption{margin-top:.5rem;font-size:.82rem;color:var(--muted)}
+
+/* Obsidian 语法 */
+mark{background:color-mix(in srgb,var(--accent) 18%,transparent);color:inherit;padding:.05em .2em;border-radius:2px}
+.wikilink-missing{color:var(--muted);border-bottom:1px dashed var(--muted)}
+.callout{margin:1.6rem 0;padding:.85rem 1.1rem;background:var(--code-bg);border-left:2px solid var(--accent);border-radius:0 3px 3px 0}
+.callout>*:last-child{margin-bottom:0}
+.callout-title{font-size:.82rem;font-weight:600;color:var(--accent);letter-spacing:.04em;margin-bottom:.3rem}
+.callout-title p{margin:0}
