@@ -51,8 +51,19 @@ function Link(el)
   end
   local href = root .. encode(slug) .. "/"
   if anchor ~= "" then
-    local a = anchor:lower():gsub("%s+", "-")
-    href = href .. "#" .. a
+    -- 模仿 pandoc 的标题 ID 生成规则:小写、空格换成 -、删除标点符号
+    local out = {}
+    for _, cp in utf8.codes(anchor:lower()) do
+      local c = utf8.char(cp)
+      if c:match("%s") then
+        out[#out+1] = "-"
+      elseif not ((cp < 128 and c:match("%p") and not c:match("[-_.]"))
+               or (cp >= 0x3000 and cp <= 0x303F)
+               or (cp >= 0xFF00 and cp <= 0xFF20)) then
+        out[#out+1] = c
+      end
+    end
+    href = href .. "#" .. table.concat(out)
   end
   return pandoc.Link(el.content, href)
 end

@@ -4,13 +4,19 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>$if(index)$$site-title$$else$$title$ · $site-title$$endif$</title>
-<meta name="description" content="$site-desc$">
+<meta name="description" content="$if(description)$$description$$else$$site-desc$$endif$">
+$if(url)$<link rel="canonical" href="$url$">
+<meta property="og:url" content="$url$">$endif$
+<meta property="og:title" content="$if(index)$$site-title$$else$$title$$endif$">
+<meta property="og:description" content="$if(description)$$description$$else$$site-desc$$endif$">
+<meta property="og:type" content="$if(post)$article$else$website$endif$">
 <script>
 (function(){var t;try{t=localStorage.getItem("theme")}catch(e){}
 if(t==="dark"||t==="light")document.documentElement.dataset.theme=t})();
 </script>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%231f3a5f'/%3E%3Cpath d='M9 11l7 5-7 5M18 22h6' fill='none' stroke='%23fff' stroke-width='2.5'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="$root$style.css">
+<link rel="alternate" type="application/atom+xml" href="$root$atom.xml" title="$site-title$">
 <script src="$root$site.js" defer></script>
 </head>
 <body class="$if(index)$home$else$inner$endif$">

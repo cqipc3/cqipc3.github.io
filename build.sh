@@ -93,6 +93,8 @@ for ((i = 0; i < n; i++)); do
     IFS=$US read -r _ pslug ptitle _ _ <<< "${entries[i+1]}"
     extra+=(-V "older-url=../$pslug/" -V "older-title=$(html_esc "$ptitle")")
   fi
+  [ -n "$summary" ] && extra+=(-V "description=$(html_esc "$summary")")
+  extra+=(-V "url=$SITE_URL/$slug/")
   while IFS= read -r a; do [ -n "$a" ] && extra+=("$a"); done < <(source_args "$file")
   render "$file" "$OUT/$slug" "../" -V post=1 --metadata title="$title" --metadata date="$date" ${extra[@]+"${extra[@]}"}
 done
@@ -100,6 +102,7 @@ done
 # ---------- 首页:按年份分组 ----------
 index=$(mktemp)
 {
+  echo '```{=html}'
   year=""
   for e in ${entries[@]+"${entries[@]}"}; do
     IFS=$US read -r date slug title summary _ <<< "$e"
@@ -108,22 +111,74 @@ index=$(mktemp)
       year=${date:0:4}
       echo "<section class=\"year\"><h2>$year</h2><ul>"
     fi
-    echo "<li><time datetime=\"$date\">${date:5}</time><div><a href=\"$slug/\">$title</a><p class=\"summary\">$summary</p></div></li>"
+    echo "<li><time datetime=\"$date\">${date:5}</time><div><a href=\"$slug/\">$(html_esc "$title")</a><p class=\"summary\">$(html_esc "$summary")</p></div></li>"
   done
   [ -n "$year" ] && echo "</ul></section>"
+  echo '```'
 } > "$index"
 
-render "$index" "$OUT" "" -V index=1 --metadata title="$SITE_TITLE"
+render "$index" "$OUT" "" -V index=1 --metadata title="$SITE_TITLE" -V "url=$SITE_URL/"
 rm -f "$index"
+
+# ---------- 生成 Atom feed ----------
+{
+  echo '<?xml version="1.0" encoding="utf-8"?>'
+  echo '<feed xmlns="http://www.w3.org/2005/Atom">'
+  echo "  <title>$(html_esc "$SITE_TITLE")</title>"
+  echo "  <id>$SITE_URL/</id>"
+  echo "  <link href=\"$SITE_URL/\"/>"
+  echo "  <link rel=\"self\" href=\"$SITE_URL/atom.xml\"/>"
+  [ ${#entries[@]} -gt 0 ] && {
+    IFS=$US read -r date _ _ _ _ <<< "${entries[0]}"
+    echo "  <updated>${date}T00:00:00Z</updated>"
+  }
+  echo "  <author><name>crunchxx</name></author>"
+  for e in ${entries[@]+"${entries[@]}"}; do
+    IFS=$US read -r date slug title summary _ <<< "$e"
+    echo "  <entry>"
+    echo "    <title>$(html_esc "$title")</title>"
+    echo "    <link href=\"$SITE_URL/$slug/\"/>"
+    echo "    <id>$SITE_URL/$slug/</id>"
+    echo "    <updated>${date}T00:00:00Z</updated>"
+    [ -n "$summary" ] && echo "    <summary>$(html_esc "$summary")</summary>"
+    echo "  </entry>"
+  done
+  echo '</feed>'
+} > "$OUT/atom.xml"
+
+# ---------- 生成 sitemap.xml ----------
+{
+  echo '<?xml version="1.0" encoding="utf-8"?>'
+  echo '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
+  echo "  <url><loc>$SITE_URL/</loc></url>"
+  for e in ${entries[@]+"${entries[@]}"}; do
+    IFS=$US read -r _ slug _ _ _ <<< "$e"
+    echo "  <url><loc>$SITE_URL/$slug/</loc></url>"
+  done
+  for f in pages/*.md; do
+    [ -e "$f" ] || continue
+    echo "  <url><loc>$SITE_URL/$(slug_of "$f")/</loc></url>"
+  done
+  echo '</urlset>'
+} > "$OUT/sitemap.xml"
 
 # ---------- 独立页面(如 about) ----------
 for f in pages/*.md; do
   [ -e "$f" ] || continue
   title=$(meta "$f" title); [ -n "$title" ] || title=$(basename "$f" .md)
   extra=()
+  extra+=(-V "url=$SITE_URL/$(slug_of "$f")/")
   while IFS= read -r a; do [ -n "$a" ] && extra+=("$a"); done < <(source_args "$f")
   render "$f" "$OUT/$(slug_of "$f")" "../" --metadata title="$title" ${extra[@]+"${extra[@]}"}
 done
+
+# ---------- 生成 404 页面 ----------
+notfound=$(mktemp)
+printf '找不到这一页。[回首页](/)\n' > "$notfound"
+render "$notfound" "$OUT/_404" "/" --metadata title="404"
+mv "$OUT/_404/index.html" "$OUT/404.html"
+rmdir "$OUT/_404"
+rm -f "$notfound"
 
 cp style.css site.js "$OUT/"
 [ -d static ] && cp -r static/. "$OUT/" && rm -f "$OUT/.gitkeep"
